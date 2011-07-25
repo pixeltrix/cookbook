@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= @recipe.name %></h1>
+<%= simple_format(@recipe.description) %>
+
+<h2>Ingredients</h2>
+<table>
+<tr>
+<th>Amount</th>
+<th>Description</th>
+</tr>
+<% @recipe.steps.each do |step| %>
+<% step.step_ingredients.each do |ingredient| %>
+<% if ingredient.ingredient.present? %>
+<tr>
+<td><%= ingredient.amount %> <%= ingredient.unit %></td>
+<td><%= ingredient.name %></td>
+</tr>
+<% end %>
+<% end %>
+<% end %>
+</table>
+
+<h2>Instructions</h2>
+<ol>
+<% @recipe.steps.each do |step| %>
+<li><%= step.instructions %></li>
+<% end %>
+</ol>
+
+<%= link_to 'Edit', edit_recipe_path(@recipe) %> |
+<%= link_to 'Back', recipes_path %>

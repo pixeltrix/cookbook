@@ -1,0 +1,56 @@
+<%= form_for(@recipe) do |f| %>
+  <% if @recipe.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@recipe.errors.count, "error") %> prohibited this recipe from being saved:</h2>
+
+      <ul>
+      <% @recipe.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_area :description, :rows => 5 %>
+  </div>
+
+  <table>
+    <tr>
+      <th>Delete</th>
+      <th>Instructions</th>
+      <th>Ingredient</th>
+      <th>Amount</th>
+      <th>Unit</th>
+    </tr>
+
+  <%= f.fields_for :steps do |s| %>
+    <tr>
+      <td align="center"><%= s.check_box :_destroy %></td>
+      <td><%= s.text_field :instructions %></td>
+      <%= s.fields_for :step_ingredients do |si| %>
+      <%= si.fields_for :ingredient do |i| %>
+      <td><%= i.text_field :name %></td>
+      <% end %>
+      <% if si.object.ingredient.present? %>
+      <td><%= si.text_field :amount, :size => 4 %></td>
+      <td><%= si.text_field :unit, :size => 10 %></td>
+      <% else %>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <% end %>
+      <% end %>
+    </tr>
+  <% end %>
+  </table>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
